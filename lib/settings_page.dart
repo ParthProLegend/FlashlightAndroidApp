@@ -3,6 +3,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'privacy.dart';
+
 class SettingsPage extends StatefulWidget {
   final Map<String, dynamic> preferences;
 
@@ -179,12 +181,43 @@ class SettingsPageState extends State<SettingsPage> {
               ),
             const Spacer(),
             ListTile(
+              leading: const Icon(Icons.info , color: Colors.black),
+              title: const Text('Terms & Conditions, Privacy Policy'),
+              trailing: IconButton(
+                icon: const Icon(Icons.phone_android, color: Colors.grey),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PrivacyPage(),
+                    ),
+                  );
+                },
+              ),
+              onTap: () async {
+                const url = 'https://parthprolegend.wixsite.com/privacy-policy';
+                if (await canLaunchUrl(Uri.parse(url))) {
+                  await launchUrl(Uri.parse(url));
+                } else {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Could not launch URL')),
+                  );
+                }
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.code, color: Colors.black),
               title: const Text('My GitHub Profile'),
               onTap: () async {
-                const url = 'https://github.com/default-profile';
+                const url = 'https://github.com/ParthProLegend';
                 if (await canLaunchUrl(Uri.parse(url))) {
                   await launchUrl(Uri.parse(url));
+                } else {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Could not launch URL')),
+                  );
                 }
               },
             ),
@@ -192,9 +225,14 @@ class SettingsPageState extends State<SettingsPage> {
               leading: const Icon(Icons.book, color: Colors.black),
               title: const Text('GitHub Repository (Contributions Welcome!!)'),
               onTap: () async {
-                const url = 'https://github.com/default-repo';
+                const url = 'https://github.com/ParthProLegend/FlashlightAndroidApp';
                 if (await canLaunchUrl(Uri.parse(url))) {
                   await launchUrl(Uri.parse(url));
+                } else {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Could not launch URL')),
+                  );
                 }
               },
             ),

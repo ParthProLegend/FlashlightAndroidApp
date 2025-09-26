@@ -101,9 +101,11 @@ class _FlashlightHomePageState extends State<FlashlightHomePage> {
         _startStrobe();
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Flashlight error: ${e.toString()}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Flashlight error: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -309,7 +311,7 @@ class _FlashlightHomePageState extends State<FlashlightHomePage> {
     };
   }
 
-  void navigateToSettings(BuildContext context) async {
+  void navigateToSettings() async {
     final preferences = await loadPreferences();
     // ignore: use_build_context_synchronously
     await Navigator.push(
@@ -371,9 +373,11 @@ class _FlashlightHomePageState extends State<FlashlightHomePage> {
         setState(() {
           _isStrobing = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Strobe error: ${e.toString()}')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Strobe error: ${e.toString()}')),
+          );
+        }
       }
     }
     strobe();
@@ -403,9 +407,7 @@ class _FlashlightHomePageState extends State<FlashlightHomePage> {
           IconButton(
             icon: const Icon(Icons.settings),
             tooltip: 'Settings',
-            onPressed: () {
-              navigateToSettings(context);
-            },
+            onPressed: navigateToSettings,
           ),
         ],
       ),
@@ -415,76 +417,81 @@ class _FlashlightHomePageState extends State<FlashlightHomePage> {
             : _appBackgroundColor, // Background color based on AppBackgroundColourValue
         child: Stack(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: _toggleFlashlight,
-                  child: Semantics(
-                    label: _isTorchOn ? 'Turn off flashlight' : 'Turn on flashlight',
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: _isStrobing || _isTorchOn ? Colors.red : Colors.green,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _isTorchOn ? Icons.flashlight_off : Icons.flashlight_on,
-                        color: Colors.white,
-                        size: 40,
+            Align(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: _toggleFlashlight,
+                    child: Semantics(
+                      label: _isTorchOn ? 'Turn off flashlight' : 'Turn on flashlight',
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: _isStrobing || _isTorchOn ? Colors.red : Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            _isTorchOn ? Icons.flashlight_off : Icons.flashlight_on,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                if (!_useBackFlashlight) ...[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ..._colorPresets.map((color) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _screenFlashlightColor = color;
-                            });
-                          },
+                  const SizedBox(height: 16),
+                  if (!_useBackFlashlight) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ..._colorPresets.map((color) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _screenFlashlightColor = color;
+                              });
+                            },
+                            child: Semantics(
+                              label: 'Select color preset',
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                decoration: BoxDecoration(
+                                  color: color,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                        GestureDetector(
+                          onTap: _managePresets,
                           child: Semantics(
-                            label: 'Select color preset',
+                            label: 'Manage color presets',
                             child: Container(
                               width: 40,
                               height: 40,
                               margin: const EdgeInsets.symmetric(horizontal: 8),
                               decoration: BoxDecoration(
-                                color: color,
+                                color: Colors.grey[300],
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.black),
                               ),
+                              child: const Icon(Icons.add, color: Colors.black),
                             ),
-                          ),
-                        );
-                      }),
-                      GestureDetector(
-                        onTap: _managePresets,
-                        child: Semantics(
-                          label: 'Manage color presets',
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.black),
-                            ),
-                            child: const Icon(Icons.add, color: Colors.black),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
             if (!_isContinuousMode)
               Align(
