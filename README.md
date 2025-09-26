@@ -6,8 +6,12 @@ An alpha build of flashlight with many features to come.
 
 It is in review on Google Play Store for Open Testing. Download from there for now.
 
-![alt text](https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/1.jpg "Screenshot 1")
-![alt text](https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/2.jpg "Screenshot 2")
-![alt text](https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/3.jpg "Screenshot 3")
-![alt text](https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/4.jpg "Screenshot 4")
-![alt text](https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/5.jpg "Screenshot 5")
+<img src ="https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/1.jpg" height="400">    <img src ="https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/2.jpg" height="400">    <img src ="https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/3.jpg" height="400">    <img src ="https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/4.jpg" height="400">    <img src ="https://github.com/ParthProLegend/FlashlightAndroidApp/blob/main/assets/5.jpg" height="400">
+
+Features- 
+
+* Back Flash
+* Front Flash
+* Strobe Effect
+* Custom Background Colour
+* Colour Presets
