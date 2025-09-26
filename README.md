@@ -19,4 +19,10 @@ Features-
 
 [<img alt='Now on Google Play' height="80px" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>](https://play.google.com/store/apps/details?id=dev.parthprolegend.flashlight&utm_source=github) 
 
+## Coming Soon to:
+
+[<img alt='Coming to F-Droid' src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80">](https://parthprolegend.wixsite.com/privacy-policy)
+
+
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/parthprolegend)
