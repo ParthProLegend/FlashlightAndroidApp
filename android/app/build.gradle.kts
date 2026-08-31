@@ -7,6 +7,15 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keystorePropertiesFile = rootProject.file("key.properties")
+val keystoreProperties = Properties()
+
+if (keystorePropertiesFile.exists()) {
+    FileInputStream(keystorePropertiesFile).use {
+        keystoreProperties.load(it)
+    }
+}
+
 android {
     namespace = "dev.parthprolegend.flashlight"
     compileSdk = flutter.compileSdkVersion
@@ -31,29 +40,25 @@ android {
 
     signingConfigs {
         create("release") {
-            val propertiesFile = rootProject.file("key.properties")
-            if (propertiesFile.exists()) {
-                val properties = Properties().apply {
-                    load(FileInputStream(propertiesFile))
-                }
-                storeFile = file(properties["storeFile"] as String)
-                storePassword = properties["storePassword"] as String
-                keyPassword = properties["keyPassword"] as String
-                keyAlias = properties["keyAlias"] as String
-            }
+            keyAlias = keystoreProperties["keyAlias"] as String?
+            keyPassword = keystoreProperties["keyPassword"] as String?
+            storeFile = (keystoreProperties["storeFile"] as String?)?.let { file(it) }
+            storePassword = keystoreProperties["storePassword"] as String?
         }
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true // Enable code shrinking
-            isShrinkResources = true // Enable resource shrinking
+            isMinifyEnabled = true
+            isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+
         debug {
             signingConfig = signingConfigs.getByName("debug")
         }
